@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "dev": "webpack-serve config/examples.dev.js --port 9000",
-    "build:lib": "webpack -p --config config/lib.js",
+    "build:lib": "webpack --config config/lib.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

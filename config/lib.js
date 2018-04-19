@@ -19,7 +19,7 @@ const componentsEntry = getComponentsEntry()
 componentsEntry['index'] = path.resolve(__dirname, '../src/index.js')
 
 module.exports = merge(config, {
-  mode: 'production',
+  mode: 'none',
   entry: componentsEntry,
   output: {
     path: path.resolve(__dirname, '../lib'),
@@ -29,6 +29,9 @@ module.exports = merge(config, {
   externals: {
     vue: {
       commonjs2: 'vue'
+    },
+    'element-ui': {
+      commonjs2: 'element-ui'
     }
   }
 })
