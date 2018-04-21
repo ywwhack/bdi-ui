@@ -20,6 +20,9 @@ function getComponentsEntry () {
 const componentsEntry = getComponentsEntry()
 // 增加 index.js 入口
 componentsEntry['index'] = path.resolve(__dirname, '../src/index.js')
+// 打包全局样式至 lib/theme-chalk/base.css
+// todo: 通过这种方式，会额外增加一个 base.js 文件，后面去掉
+componentsEntry['base'] = path.resolve(__dirname, '../src/styles/index.scss')
 
 module.exports = merge(config, {
   mode: 'none',

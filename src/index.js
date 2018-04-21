@@ -1,3 +1,5 @@
+import './styles/index.scss'
+
 import IndexFilter from './components/IndexFilter'
 import LogicSelector from './components/LogicSelector'
 import Menu from './components/Menu'

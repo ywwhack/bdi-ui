@@ -6,7 +6,7 @@
         </el-input>
       </div>
       <div class="index-filter-body">
-        <ul class="index-group-list">
+        <ul class="no-list-style index-group-list">
           <li
             v-for="group in groupedIndexes" :key="group.name"
             class="index-group">
@@ -17,7 +17,7 @@
                 @change="change(group.members, $event)">
               {{ group.name }}
             </label>
-            <ul>
+            <ul class="no-list-style">
               <li
                 v-for="member in group.members" :key="member.name"
                 class="index-item text-ellipsis">
@@ -31,7 +31,7 @@
         </ul>
         <div class="index-selected-list">
           已关注指标：
-          <transition-group name="list" tag="ul">
+          <transition-group name="list" tag="ul" class="no-list-style">
             <li
               v-for="(index, i) in tempSelected" :key="index.name"
               class="text-ellipsis" :class="{ dragging: index === dragging }"
@@ -216,16 +216,10 @@ export default {
 <style lang="scss">
 $--border-color: #dcdfe6;
 
-// todo: put this to global styles
-.text-ellipsis {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .bdi-index-filter {
   width: 440px;
   background: #fff;
+  font-size: 12px;
 
   .index-filter-header {
     padding: 12px 16px;
