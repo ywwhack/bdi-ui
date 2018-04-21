@@ -9,6 +9,11 @@
       {
         "libraryName": "element-ui",
         "styleLibraryName": "theme-chalk"
+      },
+      {
+        "libraryName": "bdi-ui",
+        "styleLibraryName": "theme-chalk",
+        "camel2Dash": false
       }
     ]]
   ]
