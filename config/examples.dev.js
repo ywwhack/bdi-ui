@@ -15,6 +15,10 @@ module.exports = merge(config, {
   },
   module: {
     rules: [
+      {
+        test: /.vue$/,
+        loader: 'vue-loader'
+      },
       ...utils.styleLoaders(),
       ...utils.mdLoaders()
     ]
