@@ -14,7 +14,10 @@ module.exports = merge(config, {
     filename: '[name].js'
   },
   module: {
-    rules: utils.styleLoaders()
+    rules: [
+      ...utils.styleLoaders(),
+      ...utils.mdLoaders()
+    ]
   },
   plugins: [
     new HtmlWebpackPlugin({
