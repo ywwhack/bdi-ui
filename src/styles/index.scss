@@ -1,11 +1,13 @@
-.text-ellipsis {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.no-list-style {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.bdi {
+  &-text-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  &-no-list-style {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
 }

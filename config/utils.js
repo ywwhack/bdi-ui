@@ -1,3 +1,4 @@
+const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const md = require('markdown-it')()
 const cheerio = require('cheerio')
@@ -27,10 +28,22 @@ exports.cssLoaders = function (options) {
 
     // Extract CSS when that option is specified
     if (options.extract) {
-      return [MiniCssExtractPlugin.loader].concat(loaders)
+      loaders.unshift(MiniCssExtractPlugin.loader)
     } else {
-      return ['vue-style-loader'].concat(loaders)
+      loaders.unshift('vue-style-loader')
     }
+
+    // add sass-resources-loader
+    if (options.sassResources) {
+      loaders.push({
+        loader: 'sass-resources-loader',
+        options: {
+          resources: path.resolve(__dirname, '../examples/styles/element-variables.scss')
+        }
+      })
+    }
+
+    return loaders
   }
 
   // https://vue-loader.vuejs.org/en/configurations/extract-css.html

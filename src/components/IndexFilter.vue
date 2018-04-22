@@ -6,7 +6,7 @@
         </el-input>
       </div>
       <div class="index-filter-body">
-        <ul class="no-list-style index-group-list">
+        <ul class="bdi-no-list-style index-group-list">
           <li
             v-for="group in groupedIndexes" :key="group.name"
             class="index-group">
@@ -17,10 +17,10 @@
                 @change="change(group.members, $event)">
               {{ group.name }}
             </label>
-            <ul class="no-list-style">
+            <ul class="bdi-no-list-style">
               <li
                 v-for="member in group.members" :key="member.name"
-                class="index-item text-ellipsis">
+                class="index-item bdi-text-ellipsis">
                 <label>
                   <input type="checkbox" name="index" :value="member" v-model="tempSelected">
                   {{ member.name }}
@@ -31,10 +31,10 @@
         </ul>
         <div class="index-selected-list">
           已关注指标：
-          <transition-group name="list" tag="ul" class="no-list-style">
+          <transition-group name="list" tag="ul" class="bdi-no-list-style">
             <li
               v-for="(index, i) in tempSelected" :key="index.name"
-              class="text-ellipsis" :class="{ dragging: index === dragging }"
+              class="bdi-text-ellipsis" :class="{ dragging: index === dragging }"
               :title="index.name"
               draggable
               @dragstart="dragStart(index)"
@@ -212,140 +212,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-$--color-primary: teal;
-$--border-color: #dcdfe6;
-
-.bdi-index-filter {
-  width: 440px;
-  background: #fff;
-  font-size: 12px;
-
-  // 自定义 checkbox 样式
-  input[type=checkbox] {
-    position: relative;
-    width: 12px;
-    height: 12px;
-    border: 1px solid #ccc;
-    margin: 0 0 2px;
-    border-radius: 3px;
-    outline: 0;
-    vertical-align: middle;
-    -webkit-appearance: none;
-
-    &:checked {
-      border-radius: 3px;
-      background-color: $--color-primary;
-      border-color: $--color-primary;
-
-      &::before, &::after {
-        content: '';
-        display: block;
-        position: absolute;
-        border-radius: 1px;
-        transform-origin: left top;
-        background: #fff;        
-      }
-
-      &::before {
-        width: 2px;
-        height: 5px;
-        left: 1px;
-        top: 5px;
-        transform: rotate(-50deg);
-      }
-
-      &::after {
-        width: 2px;
-        height: 7px;
-        left: 5px;
-        top: 8px;
-        transform: rotate(-140deg);
-      }
-    }
-  }
-
-  .index-filter-header {
-    padding: 12px 16px;
-    border-bottom: 1px solid $--border-color;
-
-    input {
-      width: 170px;
-    }
-  }
-
-  .index-filter-body {
-    display: flex;
-    height: 300px;
-  }
-
-  .index-group-list {
-    flex: 1;
-    padding: 0 14px;
-    overflow-y: auto;
-  }
-
-  .index-group {
-    margin-top: 18px;
-
-    & > ul {
-      margin: 10px 0 0 16px;
-    }
-  }
-
-  .index-item {
-    display: inline-block;
-    margin-right: 20px;
-    line-height: 1.3;
-  }
-
-  .index-selected-list {
-    width: 150px;
-    padding: 15px;
-    border-left: 1px solid $--border-color;
-    overflow-y: auto;
-
-    li {
-      padding: 3px;
-      margin-top: 2px;
-      transition: transform .2s, opacity .2s;
-
-      &.dragging {
-        padding: 2px;
-        border: 1px dashed #ccc;
-        opacity: .5;
-      }
-
-      span {
-        display: inline-block;
-        width: 14px;
-        height: 14px;
-        border-radius: 50%;
-        margin-right: 5px;
-        background: $--color-primary;
-        color: #fff;
-        text-align: center;
-        line-height: 12px;
-        vertical-align: middle;
-        cursor: pointer;
-      }
-    }
-  }
-
-  .index-filter-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 52px;
-    padding: 12px 16px;
-    border-top: 1px solid $--border-color;
-  }
-
-  .list-enter,
-  .list-leave-active {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-}
-</style>
