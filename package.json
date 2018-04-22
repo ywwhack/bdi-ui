@@ -16,6 +16,10 @@
   ],
   "author": "yww7289@163.com",
   "license": "ISC",
+  "faas": {
+    "domain": "bdi-ui",
+    "public": "dist"
+  },
   "dependencies": {
     "element-ui": "^2.3.4",
     "vue": "^2.5.16"
@@ -23,7 +27,6 @@
   "devDependencies": {
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.4",
-    "babel-plugin-component": "^1.1.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-2": "^6.24.1",
