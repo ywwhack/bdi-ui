@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "dev": "webpack-serve config/examples.dev.js --port 9000",
+    "build:examples": "webpack --config config/examples.prod.js",
     "build:lib": "webpack --config config/lib.js",
     "prepublish": "npm run build:lib",
     "test": "echo \"Error: no test specified\" && exit 1"
