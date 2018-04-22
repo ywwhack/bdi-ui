@@ -214,12 +214,57 @@ export default {
 </script>
 
 <style lang="scss">
+$--color-primary: teal;
 $--border-color: #dcdfe6;
 
 .bdi-index-filter {
   width: 440px;
   background: #fff;
   font-size: 12px;
+
+  // 自定义 checkbox 样式
+  input[type=checkbox] {
+    position: relative;
+    width: 12px;
+    height: 12px;
+    border: 1px solid #ccc;
+    margin: 0 0 2px;
+    border-radius: 3px;
+    outline: 0;
+    vertical-align: middle;
+    -webkit-appearance: none;
+
+    &:checked {
+      border-radius: 3px;
+      background-color: $--color-primary;
+      border-color: $--color-primary;
+
+      &::before, &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        border-radius: 1px;
+        transform-origin: left top;
+        background: #fff;        
+      }
+
+      &::before {
+        width: 2px;
+        height: 5px;
+        left: 1px;
+        top: 5px;
+        transform: rotate(-50deg);
+      }
+
+      &::after {
+        width: 2px;
+        height: 7px;
+        left: 5px;
+        top: 8px;
+        transform: rotate(-140deg);
+      }
+    }
+  }
 
   .index-filter-header {
     padding: 12px 16px;
@@ -278,7 +323,7 @@ $--border-color: #dcdfe6;
         height: 14px;
         border-radius: 50%;
         margin-right: 5px;
-        background: #2196f3;
+        background: $--color-primary;
         color: #fff;
         text-align: center;
         line-height: 12px;
