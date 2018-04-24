@@ -22,7 +22,8 @@
   },
   "dependencies": {
     "element-ui": "^2.3.4",
-    "vue": "^2.5.16"
+    "vue": "^2.5.16",
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.3",

@@ -1,25 +1,51 @@
 <template>
   <div id="app">
+    <el-menu class="sidebar" router :default-active="activeIndex" @select="select">
+      <el-menu-item
+        v-for="route in routes" :key="route.path"
+        :index="route.path">
+        {{ route.name }}
+      </el-menu-item>
+    </el-menu>
     <div class="content">
-      <bdi-index-filter-demo></bdi-index-filter-demo>
+      <router-view></router-view>
     </div>
   </div>  
 </template>
 
 <script>
-import Vue from 'vue'
-import IndexFilterMd from './docs/index-filter.md'
-const BdiIndexFilterDemo = Vue.extend(IndexFilterMd)
+import {
+  routes
+} from './router'
 
 export default {
-  components: {
-    BdiIndexFilterDemo
+  data () {
+    return {
+      activeIndex: null
+    }
+  },
+
+  methods: {
+    select (index) {
+      this.activeIndex = index
+    }
+  },
+
+  created () {
+    this.routes = routes
+    // 刷新页面时，根据 route-path 更新 activeIndex
+    const route = routes.find(item => item.path === this.$route.path)
+    if (route) {
+      this.activeIndex = route.path
+    }
   }
 }
 </script>
 
 <style lang="scss">
 #app {
+  display: flex;
+
   h2 {
     font-size: 28px;
     color: #1f2d3d;
@@ -39,7 +65,12 @@ export default {
     line-height: 1.5em;
   }
 
-  .content {
+  & > .sidebar {
+    width: 150px;
+  }
+
+  & > .content {
+    flex: 1;
     padding: 10px;
 
     h3 {

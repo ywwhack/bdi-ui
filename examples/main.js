@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App'
+import router from './router'
 import './styles/element-variables.scss'
 import './styles/index.scss'
 import ElementUI from 'element-ui'
@@ -16,5 +17,6 @@ Vue.component('bdi-index-filter', BdiIndexFilter)
 
 new Vue({
   el: '#app',
+  router,
   render: h => h(App)
 })
