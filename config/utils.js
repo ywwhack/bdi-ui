@@ -116,6 +116,9 @@ exports.mdLoaders = function () {
       loader: 'vue-markdown-loader',
       options: {
         preprocess (MarkdownIt, source) {
+          MarkdownIt.renderer.rules.table_open = function () {
+            return '<table class="table">'
+          }
           MarkdownIt.renderer.rules.fence = wrap(MarkdownIt.renderer.rules.fence)
           return source
         },

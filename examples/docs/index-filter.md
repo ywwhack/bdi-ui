@@ -1,3 +1,6 @@
+## IndexFilter 指标筛选下拉框
+通过下拉框的形式，筛选出需要的指标
+
 :::demo `data` 选项传入一个数组，数组里的每一项须包含 `{ name, type }` 字段，组件会根据 `type` 进行分组。通过 `selected.sync` 进行变量绑定。 
 
 ```html
@@ -42,3 +45,10 @@ export default {
 </script>
 ```
 :::
+
+### IndexFilter Attributes
+| 参数      | 说明    | 类型      | 可选值       | 默认值   |
+|---------- |-------- |---------- |-------------  |-------- |
+| size | 组件大小（同 element-ui） | string  | medium / small / mini | small |
+| data | 所有指标的数组 | Array | - | [] |
+| selected | 选中的指标数组，支持 .sync 修饰符 | Array | - | [] |
