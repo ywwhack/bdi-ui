@@ -1,5 +1,5 @@
 <template>
-  <dropdown ref="dropdown" title="指标配置" :size="size">
+  <dropdown ref="dropdown" :title="title" :size="size">
     <div class="bdi-index-filter">
       <div class="index-filter-header">
         <el-input :size="size" placeholder="请输入关键字进行搜索" v-model="keyword">
@@ -9,8 +9,8 @@
         <ul class="bdi-no-list-style index-group-list">
           <li
             v-for="group in groupedIndexes" :key="group.name"
-            class="index-group">
-            <label>
+            :class="{ 'index-group': isGroup(group) }">
+            <label v-if="isGroup(group)">
               <input
                 type="checkbox"
                 :checked="contain(group.members)"
@@ -19,28 +19,28 @@
             </label>
             <ul class="bdi-no-list-style">
               <li
-                v-for="member in group.members" :key="member.name"
+                v-for="member in group.members" :key="getIndexName(member)"
                 class="index-item bdi-text-ellipsis">
                 <label>
                   <input type="checkbox" name="index" :value="member" v-model="tempSelected">
-                  {{ member.name }}
+                  {{ getIndexName(member) }}
                 </label>
               </li>
             </ul>
           </li>
         </ul>
         <div class="index-selected-list">
-          已关注指标：
+          <slot name="selected-header"></slot>
           <transition-group name="list" tag="ul" class="bdi-no-list-style">
             <li
-              v-for="(index, i) in tempSelected" :key="index.name"
+              v-for="(index, i) in tempSelected" :key="getIndexName(index)"
               class="bdi-text-ellipsis" :class="{ dragging: index === dragging }"
-              :title="index.name"
-              draggable
+              :title="getIndexName(index)"
+              :draggable="sortable"
               @dragstart="dragStart(index)"
               @dragenter="dragEnter(index, i)"
               @dragend="dragEnd">
-              <span @click="unselect(index)">×</span>{{ index.name }}
+              <span @click="unselect(index)">×</span>{{ getIndexName(index) }}
             </li>
           </transition-group>
         </div>
@@ -68,10 +68,6 @@ import {
   remove
 } from '../utils'
 
-function getDefaultSelected (data) {
-  return data.filter(index => index.show)
-}
-
 function groupBy (arr, key) {
   let i = -1
   const groups = []
@@ -89,6 +85,8 @@ function groupBy (arr, key) {
   return groups
 }
 
+const NO_GROUP_TEXT = 'bdi-index-filter_not-a-group'
+
 export default {
   name: 'bdi-index-filter',
 
@@ -98,17 +96,33 @@ export default {
       default: 'small'
     },
 
-    data: {
+    title: {
+      type: String,
+      default: '指标配置'
+    },
+
+    nameProp: {
+      type: String,
+      default: 'name'
+    },
+
+    options: {
       type: Array,
       default () {
         return []
       }
     },
 
-    selected: Array
+    selected: Array,
+
+    sortable: Boolean,
+
+    groupByName: String
   },
 
   data () {
+    this.NO_GROUP_TEXT = NO_GROUP_TEXT
+
     return {
       tempSelected: [],
       keyword: '',
@@ -117,10 +131,6 @@ export default {
   },
 
   watch: {
-    'data': {
-      immediate: true,
-      handler: 'resetSelected'
-    },
     'selected': {
       immediate: true,
       handler: 'resetTempSelected'
@@ -129,23 +139,35 @@ export default {
 
   computed: {
     searchedIndexes ({
-      data,
-      keyword
+      options,
+      keyword,
+      getIndexName
     }) {
-      return data.filter(index => index.name.indexOf(keyword) > -1)
+      return options.filter(index => getIndexName(index).indexOf(keyword) > -1)
     },
 
     groupedIndexes ({
-      searchedIndexes
+      searchedIndexes,
+      groupByName
     }) {
-      return groupBy(searchedIndexes, 'type')
+      if (groupByName) {
+        return groupBy(searchedIndexes, groupByName)
+      } else {
+        return [{
+          name: NO_GROUP_TEXT,
+          members: searchedIndexes
+        }]
+      }
     }
   },
 
   methods: {
-    resetSelected () {
-      const selected = getDefaultSelected(this.data)
-      this.$emit('update:selected', selected)
+    getIndexName (index) {
+      return index[this.nameProp]
+    },
+
+    isGroup (group) {
+      return group.name !== NO_GROUP_TEXT
     },
 
     resetTempSelected () {

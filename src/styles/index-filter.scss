@@ -66,11 +66,14 @@ $--border-color: #dcdfe6;
   .index-group-list {
     flex: 1;
     padding: 0 14px;
+    margin-top: 18px;
     overflow-y: auto;
   }
 
   .index-group {
-    margin-top: 18px;
+    & + .index-group {
+      margin-top: 18px;
+    }
 
     & > ul {
       margin: 10px 0 0 16px;
