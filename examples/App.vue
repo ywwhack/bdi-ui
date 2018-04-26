@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <el-menu class="sidebar" router :default-active="activeIndex" @select="select">
+    <el-menu router :default-active="activeIndex" @select="select">
       <el-menu-item
         v-for="route in routes" :key="route.path"
         :index="route.path">
@@ -14,9 +14,7 @@
 </template>
 
 <script>
-import {
-  routes
-} from './router'
+import routes from './router/routes'
 
 export default {
   data () {
@@ -65,10 +63,6 @@ export default {
     font-size: 14px;
     color: #5e6d82;
     line-height: 1.5em;
-  }
-
-  & > .sidebar {
-    width: 150px;
   }
 
   & > .content {
