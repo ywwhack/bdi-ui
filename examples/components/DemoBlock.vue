@@ -70,18 +70,6 @@ export default {
 </script>
 
 <style lang="scss">
-.hljs {
-  line-height: 1.8;
-  font-family: Menlo, Monaco, Consolas, Courier, monospace;
-  font-size: 12px;
-  padding: 18px 24px;
-  background-color: #fafafa;
-  border: solid 1px #eaeefb;
-  margin-bottom: 25px;
-  border-radius: 4px;
-  -webkit-font-smoothing: auto;
-}
-
 .demo-block {
   position: relative;
   border: solid 1px #ebebeb;

@@ -70,10 +70,28 @@ Ported by Fabrício Tavares de Oliveira
   color: #e6550d;
 }
 
+// overwrite default hljs styles
+.hljs {
+  line-height: 1.8;
+  font-family: Menlo, Monaco, Consolas, Courier, monospace;
+  font-size: 12px;
+  padding: 18px 24px;
+  background-color: #fafafa;
+  border: solid 1px #eaeefb;
+  margin-bottom: 25px;
+  border-radius: 4px;
+  -webkit-font-smoothing: auto;
+}
+
 html, body {
   height: 100%;
 }
 
 body {
   margin: 0;
+}
+
+a {
+  color: $--color-primary;
+  text-decoration: none;
 }
