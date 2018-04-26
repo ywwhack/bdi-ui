@@ -44,7 +44,9 @@ export default {
 
 <style lang="scss">
 #app {
+  overflow: hidden;
   display: flex;
+  height: 100%;
 
   h2 {
     font-size: 28px;
@@ -70,6 +72,7 @@ export default {
   }
 
   & > .content {
+    overflow: auto;
     flex: 1;
     padding: 10px;
 
