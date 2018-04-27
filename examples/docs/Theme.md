@@ -47,7 +47,7 @@ import 'bdi-ui/lib/styles/index.scss' /* 必需 */
 
 // IndexFilter 组件
 import 'bdi-ui/lib/styles/index-filter.scss'
-import BdiIndexFilter from 'bdi-ui/lib/IndexFilter'
+import BdiIndexFilter from 'bdi-ui/lib/index-filter'
 
 Vue.component('bdi-index-filter', BdiIndexFilter)
 ```

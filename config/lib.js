@@ -5,13 +5,16 @@ const CleanPlugin = require('clean-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const config = require('./base')
 const utils = require('./utils')
+const {
+  hyphenate
+} = require('../shared/utils')
 
 // 获取 components 目录下的所有文件路径作为 webpack 的 entries
 const COMPONENT_DIR = path.resolve(__dirname, '../src/components')
 function getComponentsEntry () {
   return fs.readdirSync(COMPONENT_DIR)
     .reduce((result, filename) => {
-      const name = path.parse(filename).name
+      const name = hyphenate(path.parse(filename).name)
       result[name] = path.resolve(COMPONENT_DIR, filename)
       return result
     }, {})
