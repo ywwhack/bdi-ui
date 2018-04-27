@@ -6,7 +6,10 @@ function resolve (dir) {
 
 module.exports = {
   resolve: {
-    extensions: ['.js', '.vue', '.json']
+    extensions: ['.js', '.vue', '.json'],
+    alias: {
+      shared: resolve('shared')
+    }
   },
   module: {
     rules: [

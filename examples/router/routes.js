@@ -2,7 +2,7 @@ import Vue from 'vue'
 import {
   camelize,
   capitalize
-} from '../utils'
+} from 'shared/utils'
 
 const modules = [
   { name: 'theme', desc: '自定义主题' },
