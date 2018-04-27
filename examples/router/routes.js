@@ -5,6 +5,7 @@ import {
 } from 'shared/utils'
 
 const modules = [
+  { name: 'quickstart', desc: '快速开始' },
   { name: 'theme', desc: '自定义主题' },
   { name: 'index-filter', desc: '指标筛选器' }
 ]
