@@ -133,13 +133,17 @@ exports.mdLoaders = function () {
               if (tokens[idx].nesting === 1) {
                 const description = (m && m.length > 1) ? m[1] : ''
                 const content = tokens[idx + 1].content
-                const html = convert(striptags.strip(content, ['script', 'style'])).replace(/(<[^>]*)=""(?=.*>)/g, '$1')
+                const html = convert(striptags.fetch(content, 'template')).replace(/(<[^>]*)=""(?=.*>)/g, '$1')
+                const js = striptags.fetch(content, 'script')
+                const style = striptags.fetch(content, 'style')
                 const descriptionHTML = description
                   ? md.render(description)
                   : ''
 
-                return `<demo-block class="demo-box">
-                          <template slot="source">${striptags.fetch(html, 'template')}</template>
+                const codesandbox = md.utils.escapeHtml(JSON.stringify({ html, js, style }))
+
+                return `<demo-block class="demo-box" :codesandbox="${codesandbox}">
+                          <template slot="source">${html}</template>
                           ${descriptionHTML}
                           <template slot="highlight">`
               }

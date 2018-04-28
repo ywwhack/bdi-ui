@@ -24,13 +24,32 @@
       <transition name="text-slide">
         <span v-show="hovering">{{ controlText }}</span>
       </transition>
+      <el-tooltip effect="dark" content="前往 codesandbox 运行此例" placement="right">
+        <transition name="text-silde">
+          <el-button
+            v-show="hovering || isExpanded"
+            size="small"
+            type="text"
+            class="control-button"
+            @click.stop="gotoCodesandbox">
+            在线运行
+          </el-button>
+        </transition>
+      </el-tooltip>
     </div>
   </div>
 </template>
 
 <script>
+import {
+  gotoCodesandbox
+} from '../common/codesandbox'
 
 export default {
+  props: {
+    codesandbox: Object
+  },
+
   data () {
     return {
       hovering: false,
@@ -64,6 +83,25 @@ export default {
     'isExpanded' (val) {
       // 1px 是 meta 的 border-top
       this.codeArea.style.height = val ? `${this.codeAreaHeight + 1}px` : '0'
+    }
+  },
+
+  methods: {
+    gotoCodesandbox () {
+      const { html, js, style } = this.codesandbox
+      let content = ''
+      if (html) {
+        content += `<template>${html}</template>\n`
+      }
+      if (js) {
+        /* eslint-disable */
+        content += `<script>${js}<\/script>\n`
+      }
+      if (style) {
+        content += `<style>${style}</style>\n`
+      }
+
+      gotoCodesandbox(content)
     }
   }
 }
@@ -177,6 +215,16 @@ export default {
     &:hover {
       color: #409eff;
       background-color: #f9fafc;
+    }
+
+    .control-button {
+      line-height: 26px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 14px;
+      padding-left: 5px;
+      padding-right: 25px;
     }
 
     .text-slide-enter,
