@@ -2,6 +2,7 @@ const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const md = require('markdown-it')()
 const cheerio = require('cheerio')
+const MultiVueOptions = require('../build/multi-vue-options')
 
 exports.cssLoaders = function (options) {
   options = options || {}
@@ -108,6 +109,13 @@ function wrap (render) {
   }
 }
 
+let id = 0
+function getVid () {
+  return 'v' + id++
+}
+const contentMap = {}
+const multiVueOptions = new MultiVueOptions()
+
 // Generator loaders for .md files
 exports.mdLoaders = function () {
   return [
@@ -140,14 +148,35 @@ exports.mdLoaders = function () {
                   ? md.render(description)
                   : ''
 
+                // 为每个 demo-block 动态绑定变量
+                let bindHtml
+                let vid
+                const currentKey = idx + md.utils.escapeHtml(html)
+                if (contentMap[currentKey]) {
+                  const content = contentMap[currentKey]
+                  vid = content.vid
+                  bindHtml = content.html
+                } else {
+                  vid = getVid()
+                  bindHtml = html.replace(/:([^"]+)="([^"]+)"/g, `:$1="${vid}.$2"`)
+                  contentMap[currentKey] = {
+                    html: bindHtml,
+                    vid
+                  }
+                }
+                let jsObj
+                /* eslint-disable */
+                eval(js.replace(/(export\W+default)/, 'jsObj = '))
+                multiVueOptions.addOptions(vid, jsObj)
+
                 const codesandbox = md.utils.escapeHtml(JSON.stringify({ html, js, style }))
 
                 return `<demo-block class="demo-box" :codesandbox="${codesandbox}">
-                          <template slot="source">${html}</template>
+                          <template slot="source">${bindHtml}</template>
                           ${descriptionHTML}
                           <template slot="highlight">`
               }
-              return '</template></demo-block>\n'
+              return `</template></demo-block>\n${multiVueOptions.toTemplate()}`
             }
           }]
         ]
