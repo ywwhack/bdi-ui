@@ -107,14 +107,6 @@ export default {
         padding-left: 10px;
       }
     }
-
-    ul:not(.timeline) {
-      margin: 10px 0;
-      padding: 0 0 0 20px;
-      font-size: 14px;
-      color: #5e6d82;
-      line-height: 2em;
-    }
   }
 }
 </style>

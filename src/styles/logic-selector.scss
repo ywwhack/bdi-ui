@@ -1,0 +1,62 @@
+@import './theme.scss';
+
+$--scope-rule-height: 40;
+$--scope-gap: 20;
+
+.bdi-logic-selector {
+  position: relative;
+  
+  & > .header {
+    display: flex;
+    justify-content: space-between;
+
+    & > .opt-btns {
+      display: flex;
+    }
+  }
+
+  & > .body {
+    position: relative;
+    margin-left: 30px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -$--scope-gap + px;
+      width: 1px;
+      height: calc(100% - 10px);
+      background: $--border-color-base;
+    }
+
+    & > .node-item {
+      position: relative;
+      padding: 10px;
+      border: 1px solid $--border-color-base;
+      border-radius: 4px;
+      margin-top: 10px;
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: -($--scope-gap + 1) + px;
+        top: 50%;
+        width: $--scope-gap + px;
+        height: 1px;
+        background: $--border-color-base;
+      }
+
+      &:last-child {
+        &::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: -($--scope-gap + 1) + px;
+          bottom: 0;
+          width: 1px;
+          background: #fff;
+        }
+      }
+    }
+  }
+}
