@@ -13,7 +13,24 @@
     </div>
     <ul class="bdi-no-list-style body">
       <li v-for="item in node.children" class="node-item">
-        <div v-if="item.type === NODE_TYPE.rule">
+        <div v-if="item.type === NODE_TYPE.rule" class="rule">
+          <div class="selector">
+            <el-select v-model="item.field" style="width: 30%;" :size="size">
+              <el-option label="常用geohash" value="常用geohash"></el-option>
+            </el-select>
+            <template v-if="item.field">
+              <component
+                style="width: 30%;"
+                :is="'bdi-' + RULE_MAP[item.field] + '-condition'"
+                :selected.sync="item.condition">
+              </component>
+              <component
+                style="width: 30%;"
+                :is="'bdi-' + RULE_MAP[item.field] + '-value'"
+                :selected.sync="item.value">
+              </component>
+            </template>
+          </div>
           <el-button type="danger" :size="size" @click="delRule(item)">删除</el-button>
         </div>
         <bdi-logic-selector
@@ -30,9 +47,17 @@
 
 <script>
 import {
+  rules,
+  defineRule
+} from './rules'
+import {
   NODE_TYPE,
   RELATION_TYPE
 } from './data'
+
+const RULE_MAP = {
+  '常用geohash': 'number'
+}
 
 // node 结构
 // const node = {
@@ -53,7 +78,7 @@ import {
 //         }
 //       ]
 //     },
-//     { type: 'rule' }
+//     { type: 'rule', field: {}, condition: {}, value: {} }
 //   ]
 // }
 
@@ -91,6 +116,7 @@ export default {
 
   data () {
     this.NODE_TYPE = NODE_TYPE
+    this.RULE_MAP = RULE_MAP
 
     return {
     }
@@ -121,6 +147,18 @@ export default {
       const index = parent.children.indexOf(node)
       parent.children.splice(index, 1)
     }
+  },
+
+  defineRule,
+
+  beforeCreate () {
+    // register rules component
+    const components = this.$options.components
+    rules.forEach(rule => {
+      const type = rule.type
+      components[`bdi-${type}-condition`] = rule.condition
+      components[`bdi-${type}-value`] = rule.value
+    })
   }
 }
 </script>
