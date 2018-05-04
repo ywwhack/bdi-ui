@@ -1,4 +1,7 @@
 import number from './number'
+import text from './text'
+import bool from './bool'
+import venum from './enum'
 
 export const rules = []
 export function defineRule (definition) {
@@ -13,4 +16,9 @@ export function defineRule (definition) {
 }
 
 // add built-in rules
-[number].forEach(defineRule)
+[
+  number,
+  text,
+  bool,
+  venum
+].forEach(defineRule)

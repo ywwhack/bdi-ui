@@ -15,18 +15,19 @@
       <li v-for="item in node.children" class="node-item">
         <div v-if="item.type === NODE_TYPE.rule" class="rule">
           <div class="selector">
-            <el-select v-model="item.field" style="width: 30%;" :size="size">
-              <el-option label="常用geohash" value="常用geohash"></el-option>
+            <el-select v-model="item.field" style="width: 30%;" :size="size" @change="resetRule(item)">
+              <el-option v-for="(item, key) in RULE_MAP" :key="key" :label="key" :value="key"></el-option>
             </el-select>
             <template v-if="item.field">
               <component
                 style="width: 30%;"
-                :is="'bdi-' + RULE_MAP[item.field] + '-condition'"
+                :is="'bdi-' + RULE_MAP[item.field].type + '-condition'"
                 :selected.sync="item.condition">
               </component>
               <component
                 style="width: 30%;"
-                :is="'bdi-' + RULE_MAP[item.field] + '-value'"
+                :is="'bdi-' + RULE_MAP[item.field].type + '-value'"
+                :data="RULE_MAP[item.field].data"
                 :selected.sync="item.value">
               </component>
             </template>
@@ -56,7 +57,22 @@ import {
 } from './data'
 
 const RULE_MAP = {
-  '常用geohash': 'number'
+  'number': 'number',
+  'text': 'text',
+  'bool': 'bool',
+  'enum': {
+    type: 'enum',
+    data () {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve([
+            { name: '上海' },
+            { name: '杭州' }
+          ])
+        }, 2000)
+      })
+    }
+  }
 }
 
 // node 结构
@@ -90,6 +106,24 @@ function getDefaultGroup () {
   }
 }
 
+function normalizeRuleMap (ruleMap) {
+  // {
+  //   'number': 'number',
+  //   'enum': { type: 'enum', dataResolver () {} }
+  // }
+  // =>
+  // {
+  //   'number': { type: 'number' },
+  //   'text': { type: 'text', dataResolver () {} }
+  // }
+  return Object.keys(ruleMap).reduce((result, name) => {
+    result[name] = typeof ruleMap[name] === 'string'
+      ? { type: ruleMap[name] }
+      : ruleMap[name]
+    return result
+  }, {})
+}
+
 export default {
   name: 'bdi-logic-selector',
 
@@ -116,7 +150,7 @@ export default {
 
   data () {
     this.NODE_TYPE = NODE_TYPE
-    this.RULE_MAP = RULE_MAP
+    this.RULE_MAP = normalizeRuleMap(RULE_MAP)
 
     return {
     }
@@ -133,6 +167,11 @@ export default {
       const node = this.node
       const index = node.children.indexOf(item)
       node.children.splice(index, 1)
+    },
+
+    resetRule (item) {
+      delete item.condition
+      delete item.value
     },
 
     addGroup () {
@@ -156,7 +195,8 @@ export default {
     const components = this.$options.components
     rules.forEach(rule => {
       const type = rule.type
-      components[`bdi-${type}-condition`] = rule.condition
+      // rule.condition may be empty, eg: bool, we provide it an empty element
+      components[`bdi-${type}-condition`] = rule.condition || { render: h => h('') }
       components[`bdi-${type}-value`] = rule.value
     })
   }

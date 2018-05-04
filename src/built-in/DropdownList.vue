@@ -1,5 +1,9 @@
 <template>
-  <el-select v-model="syncSelected" :size="size" :value-key="nameProp">
+  <el-select
+    v-model="syncSelected"
+    v-bind="$attrs"
+    :size="size"
+    :value-key="nameProp">
     <el-option
       v-for="item in options" :key="getName(item)"
       :label="getName(item)"
