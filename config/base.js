@@ -8,6 +8,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
+      src: resolve('src'),
       shared: resolve('shared')
     }
   },
