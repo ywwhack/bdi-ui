@@ -158,7 +158,9 @@ exports.mdLoaders = function () {
                   bindHtml = content.html
                 } else {
                   vid = getVid()
-                  bindHtml = html.replace(/:([^"]+)="([^"]+)"/g, `:$1="${vid}.$2"`)
+                  bindHtml = html.replace(/(:|__at__)([^"]+)="([^"]+)"/g, function ($0, $1, $2, $3) {
+                    return $1 === ':' ? `${$1}${$2}="${vid}.${$3}"` : `${$1}${$2}="${vid}${$3}"`
+                  })
                   contentMap[currentKey] = {
                     html: bindHtml,
                     vid

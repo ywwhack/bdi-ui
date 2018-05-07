@@ -61,6 +61,20 @@
 //   }
 // }
 
+function toString (obj) {
+  const result = Object.keys(obj).map(key => {
+    const value = obj[key]
+    if (Array.isArray(value)) return key + ': [' + value.map(toString) + ']'
+    if (typeof value === 'function') {
+      return value.toString()
+    }
+    if (value && typeof value === 'object') return key + ': ' + toString(value)
+    if (typeof value === 'string') return key + ': ' + `"${value}"`
+    return key + ': ' + value
+  }).join(',\n')
+  return '{\n' + result + '\n}'
+}
+
 module.exports = class MultiVueOptions {
   constructor () {
     this.options = {}
@@ -68,19 +82,22 @@ module.exports = class MultiVueOptions {
 
   _collect (key, type, obj = {}) {
     const option = this.options[type] || (this.options[type] = {})
+    const isMethods = type === 'methods'
     Object.keys(obj).forEach(name => {
-      option[`"${key}.${name}"`] = obj[name]
+      const fullKey = isMethods ? `"${key}${name}"` : `"${key}.${name}"`
+      option[fullKey] = obj[name]
     })
   }
 
-  _transformLiterals (obj) {
+  _transformLiterals (obj, isMethods) {
     const keys = Object.keys(obj)
     if (!keys.length) return ''
 
-    const ns = keys[0].split('.')[0].slice(1)
-
     return keys.map(name => {
-      const fnStr = obj[name].toString().replace(/this\.([\w]+)/g, `this["${ns}.$1"]`)
+      const ns = isMethods
+        ? name.match(/v\d+/)[0]
+        : name.split('.')[0].slice(1)
+      const fnStr = obj[name].toString().replace(/this\.([\w]+)/g, `this.${ns}.$1`)
       return `${name}: function ${fnStr}`
     }).join(',')
   }
@@ -108,12 +125,11 @@ module.exports = class MultiVueOptions {
       watch = {},
       methods = {}
     } = this.options
-
     return `
       <script>
         export default {
           data () {
-            return ${JSON.stringify(data, null, '  ')}
+            return ${toString(data)}
           },
           computed: {
             ${this._transformLiterals(computed)}
@@ -122,7 +138,7 @@ module.exports = class MultiVueOptions {
             ${this._transformLiterals(watch)}
           },
           methods: {
-            ${this._transformLiterals(methods)}
+            ${this._transformLiterals(methods, true)}
           }
         }
       </script>
