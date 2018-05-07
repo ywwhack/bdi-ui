@@ -65,25 +65,9 @@
 <script>
 import Dropdown from '../built-in/Dropdown'
 import {
-  remove
+  remove,
+  groupBy
 } from '../utils'
-
-function groupBy (arr, key) {
-  let i = -1
-  const groups = []
-  const groupIndexMap = {}
-
-  while (++i < arr.length) {
-    const item = arr[i]
-    if (!(item[key] in groupIndexMap)) {
-      groupIndexMap[item[key]] =
-        groups.push({ name: item[key], members: [] }) - 1
-    }
-    groups[groupIndexMap[item[key]]].members.push(item)
-  }
-
-  return groups
-}
 
 const NO_GROUP_TEXT = 'bdi-index-filter_not-a-group'
 

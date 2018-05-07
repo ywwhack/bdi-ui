@@ -15,3 +15,20 @@ export function mapSync (props) {
     return result
   }, {})
 }
+
+export function groupBy (arr, key) {
+  let i = -1
+  const groups = []
+  const groupIndexMap = {}
+
+  while (++i < arr.length) {
+    const item = arr[i]
+    if (!(item[key] in groupIndexMap)) {
+      groupIndexMap[item[key]] =
+        groups.push({ name: item[key], members: [] }) - 1
+    }
+    groups[groupIndexMap[item[key]]].members.push(item)
+  }
+
+  return groups
+}
