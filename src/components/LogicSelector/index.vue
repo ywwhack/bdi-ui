@@ -15,19 +15,24 @@
       <li v-for="item in node.children" class="node-item">
         <div v-if="item.type === NODE_TYPE.rule" class="rule">
           <div class="selector">
-            <el-select v-model="item.field" style="width: 30%;" :size="size" @change="resetRule(item)">
-              <el-option v-for="(item, key) in RULE_MAP" :key="key" :label="key" :value="key"></el-option>
-            </el-select>
+            <fields
+              style="width: 30%;"
+              :group-by-name="fieldGroupByName"
+              :size="size"
+              :options="fields"
+              :selected.sync="item.field"
+              @change="resetRule(item)">
+            </fields>
             <template v-if="item.field">
               <component
                 style="width: 30%;"
-                :is="'bdi-' + RULE_MAP[item.field].type + '-condition'"
+                :is="'bdi-' + item.field.type + '-condition'"
                 :selected.sync="item.condition">
               </component>
               <component
                 style="width: 30%;"
-                :is="'bdi-' + RULE_MAP[item.field].type + '-value'"
-                :data="RULE_MAP[item.field].data"
+                :is="'bdi-' + item.field.type + '-value'"
+                :data="item.field.data"
                 :selected.sync="item.value">
               </component>
             </template>
@@ -47,6 +52,7 @@
 </template>
 
 <script>
+import Fields from './Fields'
 import {
   rules,
   defineRule
@@ -55,25 +61,6 @@ import {
   NODE_TYPE,
   RELATION_TYPE
 } from './data'
-
-const RULE_MAP = {
-  'number': 'number',
-  'text': 'text',
-  'bool': 'bool',
-  'enum': {
-    type: 'enum',
-    data () {
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve([
-            { name: '上海' },
-            { name: '杭州' }
-          ])
-        }, 2000)
-      })
-    }
-  }
-}
 
 // node 结构
 // const node = {
@@ -106,24 +93,6 @@ function getDefaultGroup () {
   }
 }
 
-function normalizeRuleMap (ruleMap) {
-  // {
-  //   'number': 'number',
-  //   'enum': { type: 'enum', dataResolver () {} }
-  // }
-  // =>
-  // {
-  //   'number': { type: 'number' },
-  //   'text': { type: 'text', dataResolver () {} }
-  // }
-  return Object.keys(ruleMap).reduce((result, name) => {
-    result[name] = typeof ruleMap[name] === 'string'
-      ? { type: ruleMap[name] }
-      : ruleMap[name]
-    return result
-  }, {})
-}
-
 export default {
   name: 'bdi-logic-selector',
 
@@ -145,12 +114,18 @@ export default {
 
     parent: {
       type: Object
-    }
+    },
+
+    fields: {
+      type: Array,
+      default () { return [] }
+    },
+
+    fieldGroupByName: String
   },
 
   data () {
     this.NODE_TYPE = NODE_TYPE
-    this.RULE_MAP = normalizeRuleMap(RULE_MAP)
 
     return {
     }
@@ -199,6 +174,10 @@ export default {
       components[`bdi-${type}-condition`] = rule.condition || { render: h => h('') }
       components[`bdi-${type}-value`] = rule.value
     })
+  },
+
+  components: {
+    Fields
   }
 }
 </script>

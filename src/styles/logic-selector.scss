@@ -69,3 +69,41 @@ $--scope-gap: 20;
     }
   }
 }
+
+.bdi-logic-selector__fields {
+  overflow-y: auto;
+  max-width: 400px;
+  max-height: 300px;
+  padding: 10px;
+
+  .group {
+    display: flex;
+    justify-content: space-between;
+
+    & + .group {
+      margin-top: 15px;
+    }
+
+    & > .group-name {
+      width: 100px;
+      color: $--color-text-secondary;
+    }
+
+    & > .item-list {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      margin: -15px 0 0 -15px;
+
+      & > .item {
+        margin: 15px 0 0 15px;
+        color: $--color-text-regular;
+        cursor: pointer;
+
+        &.selected {
+          color: $--color-primary;
+        }
+      }
+    }
+  }
+}
