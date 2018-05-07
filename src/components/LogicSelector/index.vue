@@ -1,5 +1,5 @@
 <template>
-  <div class="bdi-logic-selector">
+  <div v-if="node" class="bdi-logic-selector">
     <div class="header">
       <el-radio-group v-model="node.relationship" :size="size">
         <el-radio-button label="and">且</el-radio-button>
@@ -44,7 +44,9 @@
           :size="size"
           :level="level + 1"
           :node="item"
-          :parent="node">
+          :parent="node"
+          :fields="fields"
+          :field-group-by-name="fieldGroupByName">
         </bdi-logic-selector>
       </li>
     </ul>
@@ -174,6 +176,12 @@ export default {
       components[`bdi-${type}-condition`] = rule.condition || { render: h => h('') }
       components[`bdi-${type}-value`] = rule.value
     })
+  },
+
+  created () {
+    if (!this.node) {
+      this.$emit('update:node', getDefaultGroup())
+    }
   },
 
   components: {
