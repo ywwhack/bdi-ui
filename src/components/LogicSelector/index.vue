@@ -7,7 +7,7 @@
       </el-radio-group>
       <div class="opt-btns">
         <el-button type="primary" :size="size" @click="addRule">新增条件</el-button>
-        <el-button type="primary" :size="size" @click="addGroup">新增条件组</el-button>
+        <el-button v-if="level < deep" type="primary" :size="size" @click="addGroup">新增条件组</el-button>
         <el-button v-if="level > 1" type="danger" :size="size" @click="delGroup">删除</el-button>
       </div>
     </div>
@@ -46,7 +46,8 @@
           :node="item"
           :parent="node"
           :fields="fields"
-          :field-group-by-name="fieldGroupByName">
+          :field-group-by-name="fieldGroupByName"
+          :deep="deep">
         </bdi-logic-selector>
       </li>
     </ul>
@@ -123,7 +124,12 @@ export default {
       default () { return [] }
     },
 
-    fieldGroupByName: String
+    fieldGroupByName: String,
+
+    deep: {
+      type: [Number, String],
+      default: Infinity
+    }
   },
 
   data () {

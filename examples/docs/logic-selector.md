@@ -204,6 +204,49 @@ export default {
 ```
 :::
 
+### 限制规则的嵌套深度
+
+:::demo 通过设置 `deep` 来控制规则能嵌套的深度，默认可以无限嵌套
+```html
+<template>
+  <bdi-logic-selector
+    style="width: 500px;"
+    deep="3"
+    :fields="fields"
+    :node.sync="node">
+  </bdi-logic-selector>
+</template>
+<script>
+export default {
+  data () {
+    return {
+      fields: [
+        { name: 'number', type: 'number' },
+        { name: 'text', type: 'text' },
+        { name: 'bool', type: 'bool' },
+        {
+          name: 'enum',
+          type: 'enum',
+          data: [
+            { name: '上海' },
+            { name: '杭州' }
+          ]
+        }
+      ],
+      node: {
+        type: 'group',
+        relationship: 'and',
+        children: [
+          { type: 'rule', field: { name: 'number', type: 'number' }, condition: { name: '等于', value: '=' }, value: '10' }
+        ]
+      }
+    }
+  }
+}
+</script>
+```
+:::
+
 ### 使用 defineRule 自定义规则
 ```js
 import BdiLogicSelector from '../src/components/LogicSelector'
@@ -264,3 +307,4 @@ BdiLogicSelector.defineRule({
 | node | 筛选结果的根节点 | Object | - | - |
 | fields | 筛选条件 | Array | - | - |
 | filedGroupByName | 筛选条件根据哪个字段进行分组（默认不分组）| String | - | - |
+| deep | 规则最大能嵌套的深度 | String / Number | - | Infinity |
