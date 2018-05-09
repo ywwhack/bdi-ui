@@ -61,11 +61,11 @@ module.exports = async function () {
   })
 
   // 生成 index.css
-  const importedScssModules = normalFilesData.map(({ name }) => `@import '${SCSS_SOURCES_DIR}/${name}.scss'`)
+  const importedScssModules = normalFilesData.map(({ name }) => `@import '${SCSS_SOURCES_DIR}/${name}.scss';`)
   const result = sass.renderSync({
     data: `
       @import '${SCSS_SOURCES_DIR}/index.scss';
-      ${importedScssModules}
+      ${importedScssModules.join('\n')}
     `
   })
   writeFile(path.resolve(CSS_DEST_DIR, 'index.css'), result.css)
