@@ -61,18 +61,40 @@
 //   }
 // }
 
-function toString (obj) {
+const INDENT = '  '
+
+function generateSpace (number) {
+  let result = ''
+  for (let i = 0; i < number; i++) {
+    result += ' '
+  }
+  return result
+}
+
+function toString (obj, space = INDENT) {
   const result = Object.keys(obj).map(key => {
     const value = obj[key]
-    if (Array.isArray(value)) return key + ': [' + value.map(toString) + ']'
-    if (typeof value === 'function') {
-      return value.toString()
+    let result
+    if (Array.isArray(value)) {
+      result = key + ': [' + value.map(v => toString(v, space + INDENT)) + ']'
+    } else if (typeof value === 'function') {
+      const lines = value.toString().split('\n')
+      const fnName = lines.shift()
+      const extraSpace = lines[0].match(/\W+/)[0].length - space.length - INDENT.length
+      result = lines.map(line => {
+        return extraSpace > 0 ? line.slice(extraSpace) : generateSpace(extraSpace) + line
+      }).join('\n')
+      result = fnName + '\n' + result
+    } else if (value && typeof value === 'object') {
+      result = key + ': ' + toString(value, space + INDENT)
+    } else if (typeof value === 'string') {
+      result = key + ': ' + `"${value}"`
+    } else {
+      result = key + ': ' + value
     }
-    if (value && typeof value === 'object') return key + ': ' + toString(value)
-    if (typeof value === 'string') return key + ': ' + `"${value}"`
-    return key + ': ' + value
+    return space + result
   }).join(',\n')
-  return '{\n' + result + '\n}'
+  return '{\n' + result + '\n' + space.slice(2) + '}'
 }
 
 module.exports = class MultiVueOptions {
@@ -126,22 +148,22 @@ module.exports = class MultiVueOptions {
       methods = {}
     } = this.options
     return `
-      <script>
-        export default {
-          data () {
-            return ${toString(data)}
-          },
-          computed: {
-            ${this._transformLiterals(computed)}
-          },
-          watch: {
-            ${this._transformLiterals(watch)}
-          },
-          methods: {
-            ${this._transformLiterals(methods, true)}
-          }
-        }
-      </script>
-    `
+<script>
+export default {
+  data () {
+    return ${toString(data, generateSpace(6))}
+  },
+  computed: {
+    ${this._transformLiterals(computed)}
+  },
+  watch: {
+    ${this._transformLiterals(watch)}
+  },
+  methods: {
+    ${this._transformLiterals(methods, true)}
+  }
+}
+</script>
+    `.trim() + '\n'
   }
 }
