@@ -31,16 +31,6 @@ exports.cssLoaders = function (options) {
       loaders.unshift('vue-style-loader')
     }
 
-    // add sass-resources-loader
-    if (options.sassResources) {
-      loaders.push({
-        loader: 'sass-resources-loader',
-        options: {
-          resources: path.resolve(__dirname, '../examples/styles/element-variables.scss')
-        }
-      })
-    }
-
     return loaders
   }
 

@@ -71,7 +71,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import './styles/element-variables.scss';
+@import './styles/var.scss';
 
 #app {
   overflow: hidden;

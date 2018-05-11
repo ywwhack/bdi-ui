@@ -27,10 +27,10 @@ module.exports = merge(config, {
         test: /.vue$/,
         loader: 'vue-loader',
         options: {
-          loaders: utils.cssLoaders({ extract: true, sassResources: true })
+          loaders: utils.cssLoaders({ extract: true })
         }
       },
-      ...utils.styleLoaders({ extract: true, sassResources: true }),
+      ...utils.styleLoaders({ extract: true }),
       ...utils.mdLoaders()
     ]
   },

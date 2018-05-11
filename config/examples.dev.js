@@ -18,9 +18,9 @@ module.exports = merge(config, {
       {
         test: /.vue$/,
         loader: 'vue-loader',
-        options: utils.cssLoaders({ sassResources: true })
+        options: utils.cssLoaders()
       },
-      ...utils.styleLoaders({ sassResources: true }),
+      ...utils.styleLoaders(),
       ...utils.mdLoaders()
     ]
   },

@@ -83,6 +83,8 @@ Ported by Fabrício Tavares de Oliveira
   -webkit-font-smoothing: auto;
 }
 
+@import './var.scss';
+@import './lib.scss';
 @import './icons.css';
 
 html, body {
