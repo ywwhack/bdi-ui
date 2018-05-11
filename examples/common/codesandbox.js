@@ -33,9 +33,23 @@ const indexHtmlContent = convertTemplateToContent(`
   </html>
 `)
 
+const stylesConent = convertTemplateToContent(`
+  // load fonts error, it seems like codesandbox bug
+  // so we load it manully
+  @font-face {
+    font-family: 'element-icons';
+    src: url('//unpkg.com/element-ui/lib/theme-chalk/fonts/element-icons.woff')
+        format('woff'),
+      url('//unpkg.com/element-ui/lib/theme-chalk/fonts') format('truetype'); /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+    font-weight: normal;
+    font-style: normal;
+  }
+`)
+
 const mainJsContent = convertTemplateToContent(`
   import Vue from 'vue'
   import 'element-ui/lib/theme-chalk/index.css'
+  import './styles.scss'
   import ElementUI from 'element-ui'
   import 'bdi-ui/lib/theme-chalk/index.css'
   import BdiUI from 'bdi-ui'
@@ -75,6 +89,9 @@ export function gotoCodesandbox (content) {
       },
       'main.js': {
         content: mainJsContent
+      },
+      'styles.scss': {
+        content: stylesConent
       },
       'package.json': {
         content: {
