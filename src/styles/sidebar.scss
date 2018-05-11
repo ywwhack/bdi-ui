@@ -1,0 +1,177 @@
+@import './theme.scss';
+$--scope-transition-delay: .2s;
+
+.bdi-sidebar {
+  position: absolute;
+  z-index: 999;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  overflow: hidden;
+  width: 58px;
+  color: #ddd;
+  user-select: none;
+  transition: width .3s ease-in-out;
+  transition-delay: $--scope-transition-delay;
+  font-size: 12px;
+
+  &, * {
+    box-sizing: border-box;
+    flex-shrink: 0;
+  }
+
+  &.nest {
+    transition-duration: .5s;
+
+    .first-column {
+      width: 200px;
+    }
+  }
+
+  &:hover {
+    width: 160px;
+
+    &.nest {
+      width: 420px;
+    }
+
+    .level-1 > a {
+      opacity: 1;
+      transform: translateX(18px);
+    }
+  }
+
+  a {
+    display: block;
+    white-space: nowrap;
+    cursor: pointer;
+    color: #ddd;
+  }
+
+  .first-column {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 160px;
+    background: $--color-sidebar-bg;
+
+    & > ul {
+      flex-shrink: 1;
+      overflow-y: auto;
+      margin-top: 10px;
+    }
+  }
+
+  .level-1 {
+    margin-bottom: 8px;
+
+    & > a {
+      margin-bottom: 4px;
+      color: #65748b;
+      opacity: 0;
+      transition: opacity .5s ease-in-out, transform .5s ease-in-out;
+      transition-delay: $--scope-transition-delay;
+    }
+  }
+
+  .level-2 {
+    &.selected > a {
+      background: darken($--color-sidebar-bg, 2%);
+    }
+
+    &.current > a > .icon {
+      padding-right: 4px;
+      border-left: 4px solid $--color-primary;
+    }
+
+    & > a {
+      font-size: 14px;
+
+      & span {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      & > .icon {
+        width: 58px;
+        height: 40px;
+        font-size: 18px;
+        text-align: center;
+        line-height: 40px;
+      }
+
+      & > .text-ellipsis {
+        width: 130px;
+      }
+    }
+  }
+
+  .second-column {
+    display: flex;
+    flex-direction: column;
+    width: 220px;
+    background: darken($--color-sidebar-bg, 2%);
+
+    a {
+      height: 30px;
+      line-height: 30px;
+
+      &:hover {
+        background: darken($--color-sidebar-bg, 4%);
+      }
+    }
+
+    & > ul {
+      flex-shrink: 1;
+      overflow-y: auto;
+      margin-top: 10px;
+    }
+
+    & .current > a {
+      color: $--color-primary;
+    }
+  }
+
+  .level-3 {
+    &.foldable > a {
+      position: relative;
+
+      &::after {
+        content: "\25B8";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        transform: rotate(90deg);
+        transition: transform .5s ease-in-out;
+      }
+    }
+
+    &.folded {
+      & > a::after {
+        transform: rotate(0);
+      }
+
+      & > ul {
+        height: 0 !important;
+      }
+    }
+
+    & > a {
+      padding: 0 20px;
+    }
+
+    & > ul {
+      overflow: hidden;
+      transition: height .5s ease-in-out;
+    }
+  }
+
+  .level-4 > a {
+    padding-left: 36px;
+  }
+}
