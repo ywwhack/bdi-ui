@@ -1,0 +1,62 @@
+@import './theme.scss';
+
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: .3;
+    transform: scale(2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.bdi-loading {
+  position: relative;
+  height: 100%;
+
+  & > div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    & > div {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      margin: 0 10px;
+      animation: bounce 1s infinite;
+
+      &:nth-child(1) {
+        background: adjust-hue($--color-loading-primary, -30%);
+        animation-delay: .1s;
+      }
+
+      &:nth-child(2) {
+        background: adjust-hue($--color-loading-primary, -15%);
+        animation-delay: .2s;
+      }
+
+      &:nth-child(3) {
+        background: $--color-loading-primary;
+        animation-delay: .3s;
+      }
+
+      &:nth-child(4) {
+        background: adjust-hue($--color-loading-primary, 15%);
+        animation-delay: .4s;
+      }
+
+      &:nth-child(5) {
+        background: adjust-hue($--color-loading-primary, 30%);
+        animation-delay: .5s;
+      }
+    }
+  }
+}
