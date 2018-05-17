@@ -91,8 +91,20 @@ function overrideParserRules (parser, rules) {
   })
 }
 
+// vue-loader 会执行多次 md-parser，防止重复执行 parse 过程，将结果缓存下来
+const cache = {
+  // '/path/to/index-filter.md': {
+  //   source: 'aaa',
+  //   compiled: 'xxx'
+  // }
+}
+
 module.exports = function (source) {
-  // todo: why this file execute multi times?
+  const resourcePath = this.resourcePath
+  if (cache[resourcePath] && cache[resourcePath].source === source) {
+    return cache[resourcePath].compiled
+  }
+
   this.cacheable()
 
   let id = 0
@@ -162,10 +174,15 @@ module.exports = function (source) {
     }
   })
 
-  source = source.replace(/@/g, '__at__')
-  let result = parser.render(source)
+  let result = source.replace(/@/g, '__at__')
+  result = parser.render(result)
   result = multiVueOptions.toTemplate() + result
   result = renderVueTemplate(result).replace(/__at__/g, '@')
+
+  cache[resourcePath] = {
+    source,
+    compiled: result
+  }
 
   return result
 }
