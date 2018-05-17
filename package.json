@@ -21,6 +21,7 @@
     "public": "dist"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "element-ui": "^2.3.4",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1"
@@ -28,7 +29,6 @@
   "devDependencies": {
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.4",
-    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-2": "^6.24.1",
     "cheerio": "^1.0.0-rc.2",

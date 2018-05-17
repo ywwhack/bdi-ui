@@ -9,24 +9,28 @@ const {
   hyphenate
 } = require('../shared/utils')
 
-// 获取 components 目录下的所有文件路径作为 webpack 的 entries
-const COMPONENT_DIR = path.resolve(__dirname, '../src/components')
-function getComponentsEntry () {
-  return fs.readdirSync(COMPONENT_DIR)
+function getEntry (dir) {
+  return fs.readdirSync(dir)
     .reduce((result, filename) => {
       const name = hyphenate(path.parse(filename).name)
-      result[name] = path.resolve(COMPONENT_DIR, filename)
+      result[name] = path.resolve(dir, filename)
       return result
     }, {})
 }
 
-const componentsEntry = getComponentsEntry()
-// 增加 index.js 入口
-componentsEntry['index'] = path.resolve(__dirname, '../src/index.js')
+const entry = Object.assign({
+  // index.js 入口
+  'index.js': path.resolve(__dirname, '../src/index.js')
+},
+// 获取 components 目录下的所有文件路径作为 webpack 的 entries
+getEntry(path.resolve(__dirname, '../src/components')),
+// 获取 common 目录下的所有文件路径作为 webpack 的 entries
+getEntry(path.resolve(__dirname, '../src/common'))
+)
 
 module.exports = merge(config, {
   mode: 'none',
-  entry: componentsEntry,
+  entry,
   output: {
     path: path.resolve(__dirname, '../lib'),
     filename: '[name].js',
@@ -49,11 +53,14 @@ module.exports = merge(config, {
     }])
   ],
   externals: {
-    vue: {
+    'vue': {
       commonjs2: 'vue'
     },
     'element-ui': {
       commonjs2: 'element-ui'
+    },
+    'axios': {
+      commonjs2: 'axios'
     }
   }
 })

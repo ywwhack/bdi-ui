@@ -10,7 +10,8 @@ const modules = [
   { name: 'index-filter', desc: '指标筛选器' },
   { name: 'logic-selector', desc: '逻辑筛选器' },
   { name: 'sidebar', desc: '侧边栏' },
-  { name: 'loading', desc: '加载' }
+  { name: 'loading', desc: '加载' },
+  { name: 'api', desc: '请求' }
 ]
 
 const routes = []
