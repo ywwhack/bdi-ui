@@ -59,6 +59,9 @@ module.exports = merge(config, {
     'element-ui': {
       commonjs2: 'element-ui'
     },
+    'element-ui/lib/notification': {
+      commonjs2: 'element-ui/lib/notification'
+    },
     'axios': {
       commonjs2: 'axios'
     }
